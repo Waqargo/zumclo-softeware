@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zumclo</title>
+    <%- include('partials/navbar') %>
+    <style>
+        :root { --cream: #F5F5DC; --navy: #001F3F; --gold: #D4AF37; --white: #ffffff; }
+        body { background-color: var(--cream); font-family: 'Inter', sans-serif; padding-top: 100px; margin: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* Welcome Section */
+        .welcome-header { margin-bottom: 40px; }
+        .welcome-header h1 { font-family: 'MuseoModerno'; font-size: 2.5rem; color: var(--navy); margin: 0; }
+        .date-chip { background: var(--navy); color: var(--cream); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 600; }
+
+        /* Dashboard Grid */
+        .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        
+        .main-card { background: var(--navy); border-radius: 30px; padding: 40px; color: var(--cream); position: relative; overflow: hidden; }
+        .main-card::after { content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+
+        .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .action-tile { background: var(--white); padding: 25px; border-radius: 24px; text-decoration: none; color: var(--navy); transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.03); border: 1px solid transparent; }
+        .action-tile:hover { transform: translateY(-5px); border-color: var(--navy); }
+        .action-tile i { margin-bottom: 15px; display: block; color: var(--navy); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .dash-grid { grid-template-columns: 1fr; }
+            .welcome-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="welcome-header">
+        <span class="date-chip"><%= new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) %></span>
+        <h1>Welcome back, Partner</h1>
+    </div>
+
+    <div class="dash-grid">
+        <div class="main-card">
+            <h3 style="font-weight: 300; opacity: 0.8; margin: 0;">Business Liquidity</h3>
+            <h2 style="font-size: 3.5rem; margin: 10px 0;">PKR <%= (totalCapital - totalSpent).toLocaleString() %></h2>
+            <div style="display: flex; gap: 30px; margin-top: 20px;">
+                <div>
+                    <small style="opacity: 0.6; display: block;">Total Capital</small>
+                    <strong>PKR <%= totalCapital.toLocaleString() %></strong>
+                </div>
+                <div>
+                    <small style="opacity: 0.6; display: block;">Total Expenses</small>
+                    <strong>PKR <%= totalSpent.toLocaleString() %></strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <a href="/expense" class="action-tile">
+                <i data-lucide="receipt-pkr" style="width: 32px; height: 32px;"></i>
+                <strong>Add Expense</strong>
+                <p style="font-size: 0.75rem; color: #888; margin: 5px 0 0;">Log a new business cost</p>
+            </a>
+            <a href="/funds" class="action-tile">
+                <i data-lucide="arrow-left-right" style="width: 32px; height: 32px;"></i>
+                <strong>Transfer</strong>
+                <p style="font-size: 0.75rem; color: #888; margin: 5px 0 0;">Partner to partner funds</p>
+            </a>
+            <a href="/history" class="action-tile" style="grid-column: span 2;">
+                <i data-lucide="bar-chart-3" style="width: 32px; height: 32px;"></i>
+                <strong>Audit Logs</strong>
+                <p style="font-size: 0.75rem; color: #888; margin: 5px 0 0;">View full transaction history for the month</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

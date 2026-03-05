@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zumclo | Partner Management</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <%- include('partials/navbar') %>
+    <style>
+        body { background: #001F3F; color: #F5F5DC; font-family: 'Inter', sans-serif; padding: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .user-card { 
+            background: rgba(245, 245, 220, 0.05); 
+            padding: 20px; 
+            border-radius: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            margin-bottom: 15px;
+            border: 1px solid rgba(245, 245, 220, 0.1);
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .approved { background: #2ecc71; color: #fff; }
+        .pending { background: #e67e22; color: #fff; }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-grant { background: #F5F5DC; color: #001F3F; }
+        .btn-revoke { background: #e74c3c; color: #fff; }
+        .nav-back { color: #F5F5DC; text-decoration: none; display: flex; align-items: center; gap: 5px; margin-bottom: 20px; opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="nav-back"><i data-lucide="arrow-left" style="width:16px;"></i> Back to Dashboard</a>
+        <h1 style="font-family: 'MuseoModerno';">Partner Access Control</h1>
+        <p style="opacity: 0.6; margin-bottom: 30px;">Manage who can view Zumclo financial data.</p>
+
+        <% users.forEach(user => { %>
+            <div class="user-card">
+                <div>
+                    <h3 style="margin: 0;"><%= user.username %></h3>
+                    <p style="margin: 5px 0; opacity: 0.5; font-size: 0.9rem;"><%= user.email %></p>
+                    <span class="status-badge <%= user.isApproved ? 'approved' : 'pending' %>">
+                        <%= user.isApproved ? 'Authorized' : 'Pending Approval' %>
+                    </span>
+                </div>
+                
+                <form action="/toggle-access/<%= user._id %>" method="POST">
+                    <% if (user.isApproved) { %>
+                        <button type="submit" class="btn btn-revoke">Revoke Access</button>
+                    <% } else { %>
+                        <button type="submit" class="btn btn-grant">Grant Access</button>
+                    <% } %>
+                </form>
+            </div>
+        <% }) %>
+
+        <% if (users.length === 0) { %>
+            <p style="text-align: center; opacity: 0.5;">No other partners registered yet.</p>
+        <% } %>
+    </div>
+
+    <script>lucide.createIcons();</script>
+</body>
+</html>

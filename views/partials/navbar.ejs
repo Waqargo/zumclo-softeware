@@ -1,0 +1,201 @@
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    
+<style>
+    :root {
+        --cream: #F5F5DC;
+        --navy: #001F3F;
+        --accent: #e5e5c7;
+    }
+
+    nav {
+        background: rgba(0, 31, 63, 0.98);
+        height: 75px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 5%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-logo {
+        font-family: 'MuseoModerno';
+        font-size: 1.8rem;
+        text-decoration: none;
+        color: var(--cream);
+        letter-spacing: -1px;
+        z-index: 1001;
+    }
+
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 25px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: rgba(245, 245, 220, 0.7);
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+        color: var(--cream);
+    }
+
+    /* Mobile Menu Toggle - FIXING VISIBILITY */
+    .menu-toggle {
+        display: none; 
+        background: none;
+        border: none;
+        color: var(--cream);
+        cursor: pointer;
+        z-index: 1001;
+        padding: 5px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Force Lucide icons to be visible */
+    .menu-toggle svg {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    @media (max-width: 768px) {
+        .menu-toggle {
+            display: flex; /* Show on mobile */
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 0;
+            right: -100%; 
+            height: 100vh;
+            width: 75%;
+            background: var(--navy);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-links.active {
+            right: 0;
+        }
+
+        .nav-links a {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+<nav>
+    <a href="/" class="nav-logo">zumclo</a>
+
+    <div class="nav-right">
+        <ul class="nav-links" id="navLinks">
+    <% if (currentUser) { %>
+        <li>
+            <a href="/expense">
+                <i data-lucide="plus-circle" style="width:16px;"></i> Expense
+            </a>
+        </li>
+        <li>
+            <a href="/history">
+                <i data-lucide="list" style="width:16px;"></i> History
+            </a>
+        </li>
+        <li>
+            <a href="/funds">
+                <i data-lucide="wallet" style="width:16px;"></i> Funds
+            </a>
+        </li>
+
+        <% if (currentUser.username === 'admin') { %>
+            <li>
+                <a href="/manage-partners" style="color: #e67e22;">
+                    <i data-lucide="user-cog" style="width:16px;"></i> Manage Partners
+                </a>
+            </li>
+        <% } %>
+
+        <li>
+            <a href="/logout">
+                <i data-lucide="power" style="width:16px;"></i> Logout
+            </a>
+        </li>
+
+    <% } else { %>
+        <li>
+            <a href="/auth">
+                <i data-lucide="log-in" style="width:16px;"></i> Login
+            </a>
+        </li>
+    <% } %>
+</ul>
+
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+            <i data-lucide="menu" id="menuIcon"></i>
+        </button>
+    </div>
+</nav>
+
+<script>
+    // Ensure Lucide script has time to load
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        const updateIcons = () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        };
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = navLinks.classList.toggle('active');
+            
+            // Toggle icon markup
+            menuToggle.innerHTML = isOpen 
+                ? '<i data-lucide="x"></i>' 
+                : '<i data-lucide="menu"></i>';
+            
+            updateIcons();
+        });
+
+        // Close menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.innerHTML = '<i data-lucide="menu"></i>';
+                updateIcons();
+            });
+        });
+
+        updateIcons();
+    });
+</script>

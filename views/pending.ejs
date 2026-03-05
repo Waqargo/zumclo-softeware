@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zumclo | Pending Approval</title>
+    <style>
+        body { background: #001F3F; color: #F5F5DC; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; text-align: center; }
+        .card { padding: 40px; border: 1px solid rgba(245,245,220,0.2); border-radius: 20px; }
+        h1 { font-family: 'MuseoModerno'; color: #e5e5c7; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Access Restricted</h1>
+        <p>Hello, <strong><%= currentUser.username %></strong>.</p>
+        <p>Your account has been created successfully.</p>
+        <p style="opacity: 0.7;">Please contact the administrator to approve your partner access.</p>
+        <br>
+        <a href="/logout" style="color: #F5F5DC;">Logout</a>
+    </div>
+</body>
+</html>
